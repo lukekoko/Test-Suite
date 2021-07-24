@@ -66,15 +66,15 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: stash-changes
-              run: | 
-                  git stash --all
-                  echo $(pwd)
+        run: | 
+          git stash --all
+          echo $(pwd)
 
       - name: generate-bcs
         run: |
-           echo $(pwd)
-           git status
-           bash ./generate_bc.sh
+          echo $(pwd)
+          git status
+          bash ./generate_bc.sh
 
       - name: commit-and-push
         run: |
