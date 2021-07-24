@@ -45,8 +45,8 @@ jobs:
            echo -e "bc\nhtop" >> pkgs.txt
            bash ./build-bitcode.sh
            unzip -j -o \*.zip -d $GITHUB_WORKSPACE/test_cases_bc/crux-bc/
-           then rm $GITHUB_WORKSPACE/test_cases_bc/crux-bc/info.txt
-           then cd ..
+           rm $GITHUB_WORKSPACE/test_cases_bc/crux-bc/info.txt
+           cd ..
 
       - name: commit-and-push
         run: |
