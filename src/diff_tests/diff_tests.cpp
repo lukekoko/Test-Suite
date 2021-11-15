@@ -33,22 +33,30 @@ std::string extractData(const std::string str, std::string type)
 
     if(type == "read_write_svfg")
     {
-        search = {"AvgTopLvlPtsSize", "TotalNode", "TotalEdge", "AvgIndOutDeg", "AvgIndInDeg", "AvgOutDegree", "AvgInDegree", "AvgWeight"};
+        search.push_back("AvgTopLvlPtsSize");
+        search.push_back("TotalNode");
+        search.push_back("TotalEdge");
+        search.push_back("AvgIndOutDeg");
+        search.push_back("AvgIndInDeg");
+        search.push_back("AvgOutDegree");
+        search.push_back("AvgInDegree");
+        search.push_back("AvgWeight");
     } 
     else 
-    { 
-        search = {"AvgTopLvlPtsSize"};
+    {
+        search.push_back("AvgTopLvlPtsSize");
     }
     while(getline(iss, line)) 
     {
-        for (std::vector<std::string>::iterator i = search.begin(); i != search.end(); ++i) 
+        for (int i = 0; i < search.size(); i++) 
         {   
-            if (line.find(*i) != std::string::npos) 
+            if (line.find(search[i]) != std::string::npos) 
             {
-                output << line << ","; 
+                output << line << "\n"; 
             }
         }
     }
+    std::cout << output.str();
     return output.str();
 }
 
@@ -76,7 +84,9 @@ int main(int argc, char *argv[])
     std::size_t read_write_svfg = cmd1.find("write-svfg");
     if (read_write_svfg!=std::string::npos)
     {
+        std::cout << "write\n";
         data1 = extractData(result, "read_write_svfg");
+        std::cout << "read\n";
         data2 = extractData(result2, "read_write_svfg");
     } 
     else 
