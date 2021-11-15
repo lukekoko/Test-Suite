@@ -7,6 +7,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 std::string exec_command(const char* cmd) 
 {
@@ -29,10 +30,14 @@ std::string extractData(const std::string str, std::string type)
     std::stringstream iss(str);
     std::string line;
     std::stringstream output;
+    std::string marker;
     std::vector<std::string> search;
+    std::map<int,std::string> data;
+    bool found = false;
 
     if(type == "read_write_svfg")
     {
+        marker = "****SVFG Statistics****";
         search.push_back("AvgTopLvlPtsSize");
         search.push_back("TotalNode");
         search.push_back("TotalEdge");
@@ -44,17 +49,30 @@ std::string extractData(const std::string str, std::string type)
     } 
     else 
     {
+        marker = "*********Andersen Pointer Analysis Stats***************";
         search.push_back("AvgTopLvlPtsSize");
     }
+    // extract data from command output into a map
     while(getline(iss, line)) 
     {
-        for (int i = 0; i < search.size(); i++) 
-        {   
-            if (line.find(search[i]) != std::string::npos) 
-            {
-                output << line << "\n"; 
+        if (data.size() >= search.size())
+            break;
+        if (line.find(marker) != std::string::npos)
+            found = true;
+        if (found) {
+            for (int i = 0; i < search.size(); i++) 
+            {   
+                if (line.find(search[i]) != std::string::npos) 
+                {
+                    data.insert(std::make_pair(i, line));
+                }
             }
         }
+    } 
+    std::map<int, std::string>::iterator it;
+    for (it = data.begin(); it != data.end(); it++)
+    {
+        output << it->second << "\n";
     }
     std::cout << output.str();
     return output.str();
